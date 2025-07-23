@@ -1,6 +1,8 @@
-import 'package:big_g_mini_games/reaction_game/ui/game_ui.dart';
+import 'package:big_g_mini_games/niners_game/logic/niners_logic.dart';
+import 'package:big_g_mini_games/niners_game/ui/nine_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,11 +13,17 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      child: MaterialApp(home: GameUi()),
+    return ChangeNotifierProvider(
+      create: (_) => NinersLogic(),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, __) => const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: NineScreen(), // or MainScreen() if that's your hub
+        ),
+      ),
     );
   }
 }
