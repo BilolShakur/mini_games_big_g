@@ -4,14 +4,31 @@ class NinersLogic with ChangeNotifier {
   List<bool> fields = [true, true, true, true, true, true, true, true, true];
 
   void change(int index) {
+    fields[index] = !fields[index];
     if (index == 4) {
-      fields[index] = !fields[index];
       fields[3] = !fields[3];
       fields[1] = !fields[1];
       fields[5] = !fields[5];
       fields[7] = !fields[7];
-    } else {
+    } else if (index == 3 || index == 5) {
+      fields[index - 3] = !fields[index - 3];
+      fields[index + 3] = !fields[index + 3];
+
+      index == 3
+          ? fields[index + 1] = !fields[index + 1]
+          : fields[index - 1] = !fields[index - 1];
+    } else if (index == 1 || index == 7) {
       fields[index] = !fields[index];
+      fields[index - 1] = !fields[index - 1];
+      fields[index + 1] = !fields[index + 1];
+
+      index == 1
+          ? fields[index + 3] = !fields[index + 3]
+          : fields[index - 3] = !fields[index - 3];
+    } else if (index == 0 || index == 2 || index == 6 || index == 7) {
+      index == 1 || index == 7
+          ? fields[index + 1] = !fields[index + 1]
+          : fields[index - 1] = !fields[index - 1];
     }
     notifyListeners();
   }
