@@ -1,3 +1,4 @@
+import 'package:big_g_mini_games/main/ui/main_screen.dart';
 import 'package:big_g_mini_games/niners_game/logic/niners_logic.dart';
 import 'package:big_g_mini_games/niners_game/ui/nine_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,9 @@ class MainApp extends StatelessWidget {
         designSize: const Size(375, 812),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (_, __) => const MaterialApp(
+        builder: (_, __) =>  MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: NineScreen(), // or MainScreen() if that's your hub
+          home: MainScreen(), // or MainScreen() if that's your hub
         ),
       ),
     );

@@ -15,7 +15,7 @@ class GameUi extends StatefulWidget {
 }
 
 class _GameUiState extends State<GameUi> {
-  Offset position =  Offset(10.w, 20.h);
+  Offset position = Offset(10.w, 20.h);
   bool hide = false;
   Stopwatch stopwatch = Stopwatch();
   Timer? timer;
@@ -70,13 +70,12 @@ class _GameUiState extends State<GameUi> {
     setState(() {});
 
     await Future.delayed(Duration(milliseconds: 500 + random.nextInt(2000)));
-  if (mounted) {
-        position = logic.changeOffset(
+    if (mounted) {
+      position = logic.changeOffset(
         MediaQuery.of(context).size.height,
         MediaQuery.of(context).size.width,
       );
-  }
-
+    }
 
     hide = false;
     _startStopwatch();
@@ -136,8 +135,7 @@ class _GameUiState extends State<GameUi> {
         leading: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             SizedBox(width: 8.w
-             ),
+            SizedBox(width: 8.w),
             IconButton.filledTonal(
               color: Colors.white,
               onPressed: () {
@@ -146,48 +144,60 @@ class _GameUiState extends State<GameUi> {
                 setState(() {});
                 _startNewRound();
               },
-              icon:  Icon(Icons.restart_alt, color: Colors.red, size: 40.r),
+              icon: Icon(Icons.restart_alt, color: Colors.red, size: 40.r),
             ),
-             SizedBox(height: 15.h),
+            SizedBox(height: 15.h),
             IconButton.filledTonal(
               color: Colors.white,
               onPressed: pauseGame,
               icon: isPaused
-                  ?  Icon(Icons.play_arrow, color: Colors.red, size: 40.r)
-                  :  Icon(Icons.pause, color: Colors.red, size: 40.r),
+                  ? Icon(Icons.play_arrow, color: Colors.red, size: 40.r)
+                  : Icon(Icons.pause, color: Colors.red, size: 40.r),
             ),
           ],
         ),
         actions: [
-          PopupMenuButton<String>(
-            onSelected: changeBall,
-            itemBuilder: (context) {
-              return [
-                AppImages.coke,
-                AppImages.con,
-                AppImages.creator,
-                AppImages.cuc,
-                AppImages.egg,
-                AppImages.leb,
-                AppImages.onion,
-                AppImages.pat,
-                AppImages.pep,
-                AppImages.rdj,
-                AppImages.wat,
-                AppImages.wd,
-                AppImages.yest,
-              ].map((imagePath) {
-                return PopupMenuItem<String>(
-                  value: imagePath,
-                  child: Image.asset(
-                    imagePath,
-                    height: 70.h,
-                    width: 50.w,
-                    fit: BoxFit.contain,
-                  ),
-                );
-              }).toList();
-            },
+          Column(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back),
+              ),
+              SizedBox(height: 20),
+
+              PopupMenuButton<String>(
+                onSelected: changeBall,
+                itemBuilder: (context) {
+                  return [
+                    AppImages.coke,
+                    AppImages.con,
+                    AppImages.creator,
+                    AppImages.cuc,
+                    AppImages.egg,
+                    AppImages.leb,
+                    AppImages.onion,
+                    AppImages.pat,
+                    AppImages.pep,
+                    AppImages.rdj,
+                    AppImages.wat,
+                    AppImages.wd,
+                    AppImages.yest,
+                  ].map((imagePath) {
+                    return PopupMenuItem<String>(
+                      value: imagePath,
+                      child: Image.asset(
+                        imagePath,
+                        height: 70.h,
+                        width: 50.w,
+                        fit: BoxFit.contain,
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
+            ],
           ),
         ],
       ),

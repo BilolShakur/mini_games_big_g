@@ -1,54 +1,64 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class NinersLogic with ChangeNotifier {
-  List<bool> fields = [true, true, true, true, true, true, true, true, true];
+  List<bool> fields = List.generate(9, (_) => true);
   bool isWinner = false;
 
+  final Map<int, List<int>> _toggleMap = {
+    0: [0, 1, 3],
+    1: [1, 0, 2, 4],
+    2: [2, 1, 5],
+    3: [3, 0, 6, 4],
+    4: [4, 1, 3, 5, 7],
+    5: [5, 2, 8, 4],
+    6: [6, 3, 7],
+    7: [7, 6, 8, 4],
+    8: [8, 5, 7],
+  };
+
+  Map<int, List<List<bool>>> levels = {
+    1: [], // Easy
+    2: [], // Medium
+    3: [], // Hard
+  };
+
+  final Random _random = Random();
+
+  NinersLogic() {
+    generateAllLevels(); 
+  }
+
+
+  void generateAllLevels() {
+    levels[1] = List.generate(3, (_) => _generatePuzzle(2)); // Easy: 2 moves
+    levels[2] = List.generate(3, (_) => _generatePuzzle(4)); // Medium: 4 moves
+    levels[3] = List.generate(3, (_) => _generatePuzzle(6)); // Hard: 6+ moves
+  }
+
+
+  List<bool> _generatePuzzle(int moves) {
+    List<bool> puzzle = List.generate(9, (_) => true);
+    for (int i = 0; i < moves; i++) {
+      int index = _random.nextInt(9);
+      for (int toggle in _toggleMap[index]!) {
+        puzzle[toggle] = !puzzle[toggle];
+      }
+    }
+    return puzzle;
+  }
+
+  void loadLevel(List<bool> levelState) {
+    fields = List.from(levelState);
+    isWinner = !fields.contains(false);
+    notifyListeners();
+  }
+
   void change(int index) {
-    fields[index] = !fields[index];
-    if (index == 4) {
-      fields[3] = !fields[3];
-      fields[1] = !fields[1];
-      fields[5] = !fields[5];
-      fields[7] = !fields[7];
-    } else if (index == 3 || index == 5) {
-      fields[index - 3] = !fields[index - 3];
-      fields[index + 3] = !fields[index + 3];
-
-      index == 3
-          ? fields[index + 1] = !fields[index + 1]
-          : fields[index - 1] = !fields[index - 1];
-    } else if (index == 1 || index == 7) {
-      fields[index] = !fields[index];
-      fields[index - 1] = !fields[index - 1];
-      fields[index + 1] = !fields[index + 1];
-
-      index == 1
-          ? fields[index + 3] = !fields[index + 3]
-          : fields[index - 3] = !fields[index - 3];
-    } else if (index == 0 || index == 2 || index == 6 || index == 8) {
-      if (index == 0 || index == 6) {
-        fields[index + 1] = !fields[index + 1];
-        if (index == 0) {
-          fields[index + 3] = !fields[index + 3];
-        }
-        if (index == 6) {
-          fields[index - 3] = !fields[index - 3];
-        }
-      }
-      if (index == 2 || index == 8) {
-        fields[index - 1] = !fields[index - 1];
-        if (index == 2) {
-          fields[index + 3] = !fields[index + 3];
-        }
-        if (index == 8) {
-          fields[index - 3] = !fields[index - 3];
-        }
-      }
+    for (int i in _toggleMap[index]!) {
+      fields[i] = !fields[i];
     }
-    if (!fields.contains(false)) {
-      isWinner = true;
-    }
+    isWinner = !fields.contains(false);
     notifyListeners();
   }
 }
